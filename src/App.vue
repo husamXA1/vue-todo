@@ -28,4 +28,17 @@ const tasks = ref([
   </p>
 </template>
 
-<style scoped></style>
+<style scoped>
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: monospace;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style>
