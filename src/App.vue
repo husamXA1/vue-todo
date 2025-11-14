@@ -1,9 +1,16 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import Task from './components/Task.vue';
 
 const tasks = ref([]);
 const newTaskTitle = ref('');
+
+const completedTasks = computed(() => 
+  tasks.value.filter(task => task.completed)
+);
+const pendingTasks = computed(() => 
+  tasks.value.filter(task => !task.completed)
+);
 
 watch(
   tasks, 
@@ -65,8 +72,8 @@ function createTask() {
     </button>
   </form>
   <hr style="max-width: 600px; margin: 0 auto;"/>
-  <ul v-if="tasks.length">
-    <li v-for="task in tasks">
+  <ul v-if="pendingTasks.length">
+    <li v-for="task in pendingTasks">
       <Task 
         :title="task.title" 
         :completed="task.completed" 
@@ -78,6 +85,22 @@ function createTask() {
   <p v-else style="text-align: center; font-family: monospace;">
     No tasks available.
   </p>
+  <details>
+    <summary>{{ completedTasks.length }} Completed</summary>
+    <ul v-if="completedTasks.length">
+      <li v-for="task in completedTasks">
+        <Task 
+          :title="task.title" 
+          :completed="task.completed" 
+          @toggle="handleToggleTaskCompletion(task.id)" 
+          @delete="handleDeleteTask(task.id)"
+        />
+      </li>
+    </ul>
+    <p v-else style="text-align: center; font-family: monospace;">
+      No completed tasks.
+    </p>
+  </details>
 </template>
 
 <style scoped>
@@ -116,5 +139,11 @@ form button {
   background-color: #42b983;
   color: white;
   cursor: pointer;
+}
+
+details {
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: monospace;
 }
 </style>
