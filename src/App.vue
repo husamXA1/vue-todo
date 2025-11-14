@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import Task from './components/Task.vue';
 
 const tasks = ref([]);
+const newTaskTitle = ref('');
 
 watch(
   tasks, 
@@ -36,10 +37,34 @@ function handleDeleteTask(taskId) {
   saveTasksToLocalStorage();
 }
 
+function createTask() {
+  if (newTaskTitle.value.trim() === '') return;
+
+  const newTask = {
+    id: Date.now(),
+    title: newTaskTitle.value.trim(),
+    completed: false,
+  };
+  tasks.value.push(newTask);
+  newTaskTitle.value = '';
+  saveTasksToLocalStorage();
+}
+
 </script>
 
 <template>
   <h1>Vue Todo</h1>
+  <form @submit.prevent>
+    <input 
+      v-model="newTaskTitle" 
+      type="text" 
+      placeholder="Add a new task" 
+      required 
+    />
+    <button type="submit" @click="createTask">
+      Add Task
+    </button>
+  </form>
   <ul v-if="tasks.length">
     <li v-for="task in tasks">
       <Task 
