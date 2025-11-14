@@ -1,13 +1,40 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Task from './components/Task.vue';
 
-const tasks = ref([
-  { id: 1, title: 'Learn Vue.js', completed: false },
-  { id: 2, title: 'Build a Vue app', completed: true },
-  { id: 3, title: 'Deploy the app', completed: false },
-]);
+const tasks = ref([]);
 
+watch(
+  tasks, 
+  (newTasks) => {
+    saveTasksToLocalStorage();
+  },
+);
+
+function saveTasksToLocalStorage() {
+  localStorage.setItem('tasks', JSON.stringify(tasks.value));
+}
+
+function loadTasksFromLocalStorage() {
+  const savedTasks = localStorage.getItem('tasks');
+  if (savedTasks) {
+    tasks.value = JSON.parse(savedTasks);
+  }
+}
+loadTasksFromLocalStorage();
+
+function handleToggleTaskCompletion(taskId) {
+  const task = tasks.value.find(t => t.id === taskId);
+  if (task) {
+    task.completed = !task.completed;
+  }
+  saveTasksToLocalStorage();
+}
+
+function handleDeleteTask(taskId) {
+  tasks.value = tasks.value.filter(t => t.id !== taskId);
+  saveTasksToLocalStorage();
+}
 
 </script>
 
@@ -18,8 +45,8 @@ const tasks = ref([
       <Task 
         :title="task.title" 
         :completed="task.completed" 
-        @toggle="() => task.completed = !task.completed" 
-        @delete="() => tasks = tasks.filter(t => t.id !== task.id)"
+        @toggle="handleToggleTaskCompletion(task.id)" 
+        @delete="handleDeleteTask(task.id)"
       />
     </li>
   </ul>
