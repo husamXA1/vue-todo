@@ -29,7 +29,7 @@ const emit = defineEmits(['toggle', 'delete']);
 <style scoped>
 .task {
   padding: 10px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #aaa;
   display: flex;
   align-items: center;
 }
