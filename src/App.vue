@@ -58,13 +58,13 @@ function createTask() {
     <input 
       v-model="newTaskTitle" 
       type="text" 
-      placeholder="Add a new task" 
-      required 
+      placeholder="Add a new task"  
     />
     <button type="submit" @click="createTask">
       Add Task
     </button>
   </form>
+  <hr style="max-width: 600px; margin: 0 auto;"/>
   <ul v-if="tasks.length">
     <li v-for="task in tasks">
       <Task 
@@ -75,7 +75,7 @@ function createTask() {
       />
     </li>
   </ul>
-  <p v-else>
+  <p v-else style="text-align: center; font-family: monospace;">
     No tasks available.
   </p>
 </template>
@@ -92,5 +92,29 @@ ul {
   padding: 0;
   max-width: 600px;
   margin: 0 auto;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  gap: 10px;
+  max-width: 600px;
+}
+
+form input {
+  width: 100%;
+  padding: 0.5em;
+  border: none;
+  border-radius: 1em;
+}
+
+form button {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 1em;
+  background-color: #42b983;
+  color: white;
+  cursor: pointer;
 }
 </style>
