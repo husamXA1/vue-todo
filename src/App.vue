@@ -11,7 +11,7 @@
 </script>
 
 <template>
-  <h1>Vue Tasks</h1>
+  <h1>Vue Todo</h1>
   <ul v-if="tasks.length">
     
   </ul>
